@@ -1,0 +1,26 @@
+{
+  "devDependencies": {
+    "@fitbit/sdk": "~6.1.0"
+  },
+  "fitbit": {
+    "appUUID": "6aeb9f22-ccdf-4aec-9d79-712367366716",
+    "appType": "clockface",
+    "appDisplayName": "Lateral Bars",
+    "iconFile": "resources/icon.png",
+    "wipeColor": "",
+    "requestedPermissions": [
+      "access_activity",
+      "access_heart_rate",
+      "access_user_profile"
+    ],
+    "buildTargets": [
+      "atlas"
+    ],
+    "i18n": {
+      "en-US": {
+        "name": "Lateral Bars"
+      }
+    },
+    "defaultLanguage": "en-US"
+  }
+}

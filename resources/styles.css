@@ -1,0 +1,124 @@
+.background {
+  viewport-fill: black;
+}
+
+#ClockLabelHours {
+  font-size: 120;
+  font-family: System-Bold;
+  text-length: 32;
+  text-anchor: end;
+  x: 45%;
+  y: 40%;
+  fill: white;
+}
+
+#ClockLabelMinutes {
+  font-size: 120;
+  font-family: System-Bold;
+  text-length: 32;
+  text-anchor: end;
+  x: 45%;
+  y: 80%;
+  fill: white;
+}
+
+#ClockSecondsLabel {
+  font-size: 100;
+  font-family: System-Light;
+  text-length: 32;
+  text-anchor: end;
+  x: 45%;
+  y: 58%;
+  fill: fb-light-gray;
+  opacity: 0.7;
+}
+
+#Date {
+  font-size: 30;
+  font-family: System-Regular;
+  text-length: 32;
+  text-anchor: middle;
+  x: 50%;
+  y: 10%;
+  fill: white;
+}
+
+#BatteryLabel {
+  font-size: 20;
+  text-length: 32;
+  text-anchor: start;
+  x: 107;
+  y: 35;
+  fill: white;
+}
+
+#StepsText {
+  font-size: 20;
+  text-length: 32;
+  fill: white;
+}
+
+#DistanceText {
+  font-size: 20;
+  text-length: 32;
+  fill: white;
+}
+
+#CaloriesText {
+  font-size: 20;
+  text-length: 32;
+  fill: white;
+}
+
+#ZonesText {
+  font-size: 20;
+  text-length: 32;
+  fill: white;
+}
+
+#ElevationText {
+  font-size: 20;
+  text-length: 32;
+  fill: white;
+}
+
+#HRText {
+  font-size: 20;
+  text-length: 32;
+  fill: white;
+}
+
+.StepsImg {
+  fill: fb-green;
+  opacity: 1;
+}
+
+.DistanceImg {
+  fill: fb-indigo;
+  opacity: 1;
+}
+
+.CaloriesImg {
+  fill: fb-orange;
+  opacity: 1;
+}
+
+.AZMImg {
+  fill: fb-peach;
+  opacity: 1;
+}
+
+.ElevationImg {
+  fill: fb-violet;
+  opacity: 1;
+}
+
+.HRImg {
+  fill: fb-red;
+  opacity: 1;
+}
+
+.BatteryImg {
+  fill: white;
+  opacity: 1;
+}
