@@ -9,6 +9,7 @@ import { BodyPresenceSensor } from "body-presence";
 import { me as appbit } from "appbit";
 import { user } from "user-profile";
 import * as messaging from "messaging";
+import { display } from "display";
 
 // Update the clock every second
 clock.granularity = "seconds";
@@ -40,6 +41,15 @@ const HRfatburnBar = document.getElementById("HRfatburnBar");
 const HRcardioBar = document.getElementById("HRcardioBar");
 const HRpeakBar = document.getElementById("HRpeakBar");
 
+const Steps = document.getElementById("StepsBlock");
+const Distance = document.getElementById("DistanceBlock");
+const Calories = document.getElementById("CaloriesBlock");
+const Zones = document.getElementById("ZonesBlock");
+const Elevation = document.getElementById("ElevationBlock");
+const HeartRate = document.getElementById("HeartRateBlock");
+const Battery = document.getElementById("BatteryBlock");
+const BackgroundGradient = document.getElementById("BackgroundGradient");
+
 body.start();
 
 if (appbit.permissions.granted("access_heart_rate")) {
@@ -62,7 +72,6 @@ heart_rate.addEventListener("reading", () => {
 // Update all elements every tick with the current time
 clock.ontick = (evt) => {
   update_clock(evt);
-  //update_battery(evt);
   update_steps(evt);
   update_distance(evt);
   update_calories(evt);
@@ -102,34 +111,32 @@ function update_clock(evt) {
     hours = util.zeroPad(hours);
   }
   let mins = util.zeroPad(today.getMinutes());
-  mainClockHours.text = `${util.monoDigits(hours)}`;
-  mainClockMinutes.text = `${util.monoDigits(mins)}`;
-  mainSeconds.text = `${util.monoDigits(seconds)}`;
-  mainDate.text = `${dayweek} ${day} ${month}`;
+    mainClockHours.text = `${util.monoDigits(hours)}`;
+    mainClockMinutes.text = `${util.monoDigits(mins)}`;
+    mainSeconds.text = `${util.monoDigits(seconds)}`;
+    mainDate.text = `${dayweek} ${day} ${month}`;
 }
 
 //Initialize battery level and create function to update battery
 //as the battery level changes
 batteryLevelText.text = `${battery.chargeLevel}%`;
 
-//function update_battery(evt){
-  battery.onchange = (charger, evt) => {
-    batteryLevelText.text = `${battery.chargeLevel}%`;
-    batteryLevelGauge.width = Math.floor((175*battery.chargeLevel)/100);
-    if (battery.chargeLevel > 40) {
-      batteryLevelGauge.style.fill = 'limegreen';
-      //BatteryIcon.style.fill = 'limegreen';
-    }
-    if (battery.chargeLevel < 40) {
-      batteryLevelGauge.style.fill = 'orange';
-      //BatteryIcon.style.fill = 'orange';      
-    }
-    if (battery.chargeLevel < 20) {
-      batteryLevelGauge.style.fill = 'red';
-      //BatteryIcon.style.fill = 'red';
-    }
+battery.onchange = (charger, evt) => {
+  batteryLevelText.text = `${battery.chargeLevel}%`;
+  batteryLevelGauge.width = Math.floor((175*battery.chargeLevel)/100);
+  if (battery.chargeLevel > 40) {
+    batteryLevelGauge.style.fill = 'limegreen';
+    //BatteryIcon.style.fill = 'limegreen';
   }
-//}
+  if (battery.chargeLevel < 40) {
+    batteryLevelGauge.style.fill = 'orange';
+    //BatteryIcon.style.fill = 'orange';      
+  }
+  if (battery.chargeLevel < 20) {
+    batteryLevelGauge.style.fill = 'red';
+    //BatteryIcon.style.fill = 'red';
+  }
+}
   
 function update_steps(evt){
   StepsText.text = today.adjusted.steps;
@@ -208,4 +215,55 @@ function update_heart_rate(heart_rate) {
 
 function no_heart_rate() {
   HRText.text = "--";
+}
+
+// does the device support AOD, and can I use it?
+if (display.aodAvailable && appbit.permissions.granted("access_aod")) {
+  // tell the system we support AOD
+  display.aodAllowed = true;
+
+  // respond to display change events
+  display.addEventListener("change", () => {
+    // Is AOD inactive and the display is on?
+    if (!display.aodActive && display.on) {
+      clock.granularity = "seconds";
+      // Show elements & start sensors
+      mainClockHours.style.fontFamily = "System-Bold";
+      mainClockMinutes.style.fontFamily = "System-Bold";
+      mainDate.style.display = "inline";
+      Steps.style.display = "inline";
+      Distance.style.display = "inline";
+      Calories.style.display = "inline";
+      Zones.style.display = "inline";
+      Elevation.style.display = "inline";
+      HeartRate.style.display = "inline";
+      Battery.style.display = "inline";
+      mainSeconds.style.display ="inline";
+      BackgroundGradient.style.display = "inline";
+            
+      heart_rate.start();
+      console.log("AOD off");
+    } else {
+      clock.granularity = "minutes";
+      // Hide elements & stop sensors
+      mainDate.style.display = "none";
+      Steps.style.display = "none";
+      Distance.style.display = "none";
+      Calories.style.display = "none";
+      Zones.style.display = "none";
+      Elevation.style.display = "none";
+      HeartRate.style.display = "none";
+      Battery.style.display = "none";
+      mainSeconds.style.display ="none";
+      BackgroundGradient.style.display = "none";
+      
+      mainClockHours.style.fontFamily = "System-Light";
+      mainClockMinutes.style.fontFamily = "System-Light";
+      
+      heart_rate.stop();
+      console.log("AOD on");
+    }
+  });
+} else {
+  console.warn("No permissions for AOD");
 }
