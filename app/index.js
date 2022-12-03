@@ -9,6 +9,7 @@ import { BodyPresenceSensor } from "body-presence";
 import { me as appbit } from "appbit";
 import { user } from "user-profile";
 import * as messaging from "messaging";
+import { display } from "display";
 
 // Update the clock every second
 clock.granularity = "seconds";
@@ -39,6 +40,8 @@ const HRrestBar = document.getElementById("HRrestBar");
 const HRfatburnBar = document.getElementById("HRfatburnBar");
 const HRcardioBar = document.getElementById("HRcardioBar");
 const HRpeakBar = document.getElementById("HRpeakBar");
+
+const StepsBlock = document.getElementById("Steps");
 
 body.start();
 
@@ -208,4 +211,28 @@ function update_heart_rate(heart_rate) {
 
 function no_heart_rate() {
   HRText.text = "--";
+}
+
+// does the device support AOD, and can I use it?
+if (display.aodAvailable && appbit.permissions.granted("access_aod")) {
+  // tell the system we support AOD
+  display.aodAllowed = true;
+
+  // respond to display change events
+  display.addEventListener("change", () => {
+    // Is AOD inactive and the display is on?
+    if (!display.aodActive && display.on) {
+      clock.granularity = "seconds";
+      // Show elements & start sensors
+      mainClockHours.style.display = "inline";
+      heart_rate.start();
+    } else {
+      clock.granularity = "minutes";
+      // Hide elements & stop sensors
+      StepsBlock.style.display = "none";
+      heart_rate.stop();
+    }
+  });
+} else {
+  console.warn("no permissions for aod");
 }
